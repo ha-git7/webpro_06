@@ -91,5 +91,9 @@ app.get("/number-guess", (req, res) => {
       correctNumber: correctNumber
   });
 });
+app.get("/timer-game", (req, res) => {
+  res.render('timer-game');
+});
+
 
 app.listen(8080, () => console.log("Example app listening on port 8080!"));

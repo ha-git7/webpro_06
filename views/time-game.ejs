@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>タイマーゲーム</title>
+  <style>
+    body { text-align: center; font-family: Arial, sans-serif; margin-top: 50px; }
+    button { font-size: 20px; padding: 15px 30px; cursor: pointer; }
+    #reactionTime { font-size: 24px; color: red; }
+  </style>
+</head>
+<body>
+  <h1>タイマーゲーム</h1>
+  <p>ボタンを押す準備ができたら、「スタート」ボタンをクリックしてください。ランダムなタイミングでボタンが表示されるので、それをできるだけ早く押してください！</p>
+
+  <button id="startBtn" onclick="startGame()">スタート</button>
+  <button id="reactionBtn" style="display: none;" onclick="recordReaction()">クリックして反応</button>
+
+  <p id="reactionTime"></p>
+
+  <script>
+    let startTime, endTime;
+    let reactionBtn = document.getElementById('reactionBtn');
+    let reactionTimeDisplay = document.getElementById('reactionTime');
+
+    function startGame() {
+      document.getElementById('startBtn').disabled = true;  // スタートボタンを無効化
+      reactionBtn.style.display = 'none';  // 反応ボタンを非表示
+
+      // ランダムな遅延時間（2〜5秒の間）
+      let randomDelay = Math.floor(Math.random() * 3000) + 2000;
+      
+      setTimeout(function() {
+        reactionBtn.style.display = 'block';  // ボタンを表示
+        startTime = Date.now();  // タイムスタンプ記録
+        reactionTimeDisplay.textContent = '反応ボタンが表示されました！';
+      }, randomDelay);
+    }
+
+    function recordReaction() {
+      endTime = Date.now();
+      let reactionTime = (endTime - startTime) / 1000;  // 秒単位で計算
+      reactionTimeDisplay.textContent = `反応速度: ${reactionTime.toFixed(3)}秒`;
+      document.getElementById('startBtn').disabled = false;  // スタートボタンを再び有効化
+      reactionBtn.style.display = 'none';  // 反応ボタンを非表示
+    }
+  </script>
+</body>
+</html>
