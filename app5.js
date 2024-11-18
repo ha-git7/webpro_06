@@ -26,20 +26,19 @@ app.get("/luck", (req, res) => {
   console.log('あなたの運勢は' + luck + 'です');
   res.render('luck', { number: num, luck: luck });
 });
-
-app.get("/janken", (req, res) => {
-  let hand = req.query.ha-git7.hand; // 人間の手
-  let win = Number(req.query.win); // 勝利数
-  let total = Number(req.query.total); // 試合数
+pp.get("/janken", (req, res) => {
+  let hand = req.query.hand;
+  let win = Number(req.query.win)||0;
+  let total = Number(req.query.total)||0;
   console.log({ hand, win, total });
 
-  const num = Math.floor(Math.random() * 3 + 1); // CPUの手のランダム生成
-  let cpu = ''; // CPUの手
+  const num = Math.floor(Math.random() * 3 + 1);
+  let cpu = '';
   if (num == 1) cpu = 'グー';
   else if (num == 2) cpu = 'チョキ';
   else cpu = 'パー';
 
-  // 勝敗判定
+  // 勝敗の判定
   let judgement = '';
   if (hand === cpu) {
     judgement = '引き分け';
@@ -49,12 +48,11 @@ app.get("/janken", (req, res) => {
     (hand === 'パー' && cpu === 'グー')
   ) {
     judgement = '勝ち';
-    win += 1; // 勝利数を増加
+    win += 1;
   } else {
     judgement = '負け';
   }
-
-  total += 1; // 試合数を増加
+  total += 1;
 
   const display = {
     your: hand,
@@ -63,7 +61,7 @@ app.get("/janken", (req, res) => {
     win: win,
     total: total
   };
-
+  
   res.render('janken', display);
 });
 
