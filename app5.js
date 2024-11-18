@@ -26,7 +26,7 @@ app.get("/luck", (req, res) => {
   console.log('あなたの運勢は' + luck + 'です');
   res.render('luck', { number: num, luck: luck });
 });
-pp.get("/janken", (req, res) => {
+app.get("/janken", (req, res) => {
   let hand = req.query.hand;
   let win = Number(req.query.win)||0;
   let total = Number(req.query.total)||0;
