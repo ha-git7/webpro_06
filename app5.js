@@ -1,9 +1,7 @@
 const express = require("express");
 const app = express();
-const path = require('path');
 
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
 app.use("/public", express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: true }));
 
@@ -93,70 +91,5 @@ app.get("/number-guess", (req, res) => {
       correctNumber: correctNumber
   });
 });
-function shufflePuzzle() {
-  let puzzle = Array.from({ length: 16 }, (_, index) => index);
-  puzzle = shuffleArray(puzzle);
-  return puzzle;
-}
-
-// 配列をシャッフルするヘルパー関数
-function shuffleArray(array) {
-  let shuffled = array.slice();
-  for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
-}
-
-// パズルが解けたかどうかをチェックする関数
-function isSolved(puzzle) {
-  return puzzle.every((value, index) => value === index);
-}
-
-// ゲームページのルート（スライドパズルの初期化）
-app.get('/slide-puzzle', (req, res) => {
-  let puzzle = shufflePuzzle();
-  res.render('slide-puzzle', { puzzle, isSolved: false });
-});
-
-// タイルを移動するエンドポイント
-app.get('/move-tile', (req, res) => {
-  let index = parseInt(req.query.index, 10);
-  let puzzle = req.session.puzzle || shufflePuzzle();
-
-  // 空きスペース（0）のインデックスを取得
-  let emptyIndex = puzzle.indexOf(0);
-
-  // 移動可能な場合、タイルをスライド
-  if (canMove(index, emptyIndex)) {
-      [puzzle[index], puzzle[emptyIndex]] = [puzzle[emptyIndex], puzzle[index]];
-  }
-
-  // ゲームが解けたか確認
-  let isSolvedFlag = isSolved(puzzle);
-
-  // セッションにパズルを保存
-  req.session.puzzle = puzzle;
-
-  // 結果を返す
-  res.json({ success: true, isSolved: isSolvedFlag });
-});
-
-// タイルが移動可能かどうかを確認する関数
-function canMove(index, emptyIndex) {
-  const validMoves = [
-      -1, 1, -4, 4 // 左右上下に1つ、または4つ（4x4のグリッドのため）
-  ];
-  const isValidMove = validMoves.some(offset => index === emptyIndex + offset);
-  const isSameRow = Math.floor(index / 4) === Math.floor(emptyIndex / 4);
-  return isValidMove && isSameRow;
-}
-const session = require('express-session');
-app.use(session({
-    secret: 'some_secret_key',
-    resave: false,
-    saveUninitialized: true
-}));
 
 app.listen(8080, () => console.log("Example app listening on port 8080!"));
