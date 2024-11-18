@@ -33,4 +33,43 @@
         </div>
     <% } else { %>
         <p>1から100の間で数を予想してください！</p>
-    <% }
+    <% } %>
+
+    <!-- ゲームフォーム -->
+    <form action="/number-guess" method="get">
+        <label for="guess">あなたの予想：</label>
+        <input type="number" name="guess" id="guess" required min="1" max="100" />
+        <input type="submit" value="挑戦！">
+
+        <!-- 隠しフィールドで試行回数を送信 -->
+        <input type="hidden" name="attempts" value="<%= attempts %>">
+    </form>
+
+    <% if (attempts > 0) { %>
+        <!-- 試行回数の表示 -->
+        <div class="attempts">
+            <p>試行回数: <%= attempts %></p>
+        </div>
+    <% } %>
+
+    <!-- 正解の数の表示（デバッグ用）-->
+    <p>正解の数: <%= correctNumber %></p>
+</body>
+</html>
+2. <%= %> と <% %> の違いを理解する
+<% %>：コードブロック（例えば条件分岐やループなど）を実行しますが、出力はしません。
+<%= %>：式を評価して、その結果をHTMLに埋め込みます。主に出力（表示）に使用します。
+上記のコードでは、条件分岐部分で <% if (result) { %> と <% } %> を使用し、その中で出力を行う部分には <%= result %> を使っています。
+
+3. EJSタグの閉じ忘れがないか確認
+EJSでは必ず開いたタグは対応する閉じタグが必要です。もし閉じタグが不足していると、Could not find matching close tag for "<%" のエラーが発生します。
+
+例えば、以下のようにタグが閉じていない場合：
+
+html
+コードをコピーする
+<% if (result) { %>
+    <div class="result">
+        <strong><%= result %></strong>
+    </div>
+<%
