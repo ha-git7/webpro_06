@@ -3,6 +3,7 @@ const app = express();
 
 app.set('view engine', 'ejs');
 app.use("/public", express.static(__dirname + "/public"));
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/hello1", (req, res) => {
   const message1 = "Hello world";
@@ -63,6 +64,32 @@ app.get("/janken", (req, res) => {
   };
   
   res.render('janken', display);
+});
+app.get("/number-guess", (req, res) => {
+  let playerGuess = req.query.guess;
+  let attempts = Number(req.query.attempts) || 0;
+  let correctNumber = Math.floor(Math.random() * 100) + 1;  // 1〜100のランダムな数
+
+  let result = '';
+  let message = '';
+  
+  if (playerGuess) {
+      if (playerGuess == correctNumber) {
+          result = '正解！おめでとう！';
+      } else if (playerGuess < correctNumber) {
+          result = 'もっと大きい数です！';
+      } else {
+          result = 'もっと小さい数です！';
+      }
+      attempts += 1;
+  }
+
+  res.render('number-guess', {
+      result: result,
+      message: message,
+      attempts: attempts,
+      correctNumber: correctNumber
+  });
 });
 
 app.listen(8080, () => console.log("Example app listening on port 8080!"));
