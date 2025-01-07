@@ -1,0 +1,36 @@
+.cover {
+    border-bottom: 1px solid #c0c0c0;
+    margin: 3px;
+}
+
+.name {
+    font-weight: bold;
+    width: 8em;
+}
+
+.mes {
+    margin-left: 30px;
+}
+
+.delete-button {
+    margin-left: 20px;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+}
+
+.post-image {
+    width: 100px;
+    height: auto;
+    margin-top: 10px;
+}
+
+.comment-area {
+    margin-top: 10px;
+}
+
+.comment {
+    margin-left: 20px;
+    font-style: italic;
+    color: #555;
+}
